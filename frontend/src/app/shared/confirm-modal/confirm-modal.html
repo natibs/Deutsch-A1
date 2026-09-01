@@ -1,0 +1,7 @@
+<nati-ui-modal #modal size="sm" [title]="title()" [dismissible]="false" [showCloseButton]="false" (closed)="onClosed($event)">
+  <p>{{ message() }}</p>
+  <div modal-footer>
+    <button type="button" class="btn btn-secondary" (click)="cancel()">{{ cancelLabel() }}</button>
+    <button type="button" class="btn btn-primary" (click)="confirm()">{{ confirmLabel() }}</button>
+  </div>
+</nati-ui-modal>

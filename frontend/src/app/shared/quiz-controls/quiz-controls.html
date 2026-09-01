@@ -1,0 +1,34 @@
+<div class="result-bar" #bar @routeLeave [style.pointer-events]="visible() ? 'auto' : 'none'">
+ <div class="result-bar-inner">
+  <div class="action-row">
+    @if (checked()) {
+      <button type="button" class="btn btn-primary" (click)="continueNext.emit()">Continue</button>
+    } @else {
+      <button type="button" class="btn btn-primary" [disabled]="!canCheck()" (click)="check.emit()">Check</button>
+    }
+
+    @if (checked()) {
+      <span class="feedback" [class.correct]="correct()" [class.wrong]="!correct()">
+        @if (correct()) {
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path class="draw" d="M4 12L9 17L20 6" />
+          </svg>
+          Correct!
+        } @else {
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path class="draw draw-1" d="M6 6L18 18" />
+            <path class="draw draw-2" d="M18 6L6 18" />
+          </svg>
+          Incorrect
+        }
+      </span>
+    }
+
+    <button type="button" class="btn btn-secondary" (click)="reset.emit()">Restart</button>
+  </div>
+
+  <div class="status-row">
+    <span class="progress">{{ mastered() }} / {{ total() }} completed</span>
+  </div>
+ </div>
+</div>

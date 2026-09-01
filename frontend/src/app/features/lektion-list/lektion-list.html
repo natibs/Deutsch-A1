@@ -1,0 +1,13 @@
+<div class="lektion-grid">
+  @for (item of lektionenWithProgress(); track item.lektion.id) {
+    <a class="lektion-card" [routerLink]="['/lektion', item.lektion.id]">
+      <div class="lektion-number">Lesson {{ item.lektion.number }}</div>
+      <div class="lektion-title">{{ item.lektion.titleDe }}</div>
+      <div class="lektion-status" [class.complete]="item.completedCount === item.totalSections">
+        {{ item.completedCount }} / {{ item.totalSections }} sections completed
+      </div>
+    </a>
+  } @empty {
+    <p class="empty">Loading lessons...</p>
+  }
+</div>

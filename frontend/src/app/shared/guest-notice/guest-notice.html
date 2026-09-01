@@ -1,0 +1,10 @@
+<nati-ui-modal #modal title="Progress won't be saved" [dismissible]="false" [showCloseButton]="false">
+  <p>
+    You're not signed in, so your progress in this section won't be saved.
+    Log in or sign up to keep track of what you've completed.
+  </p>
+  <div modal-footer>
+    <a class="btn btn-secondary" routerLink="/login">Log in</a>
+    <button type="button" class="btn btn-primary" (click)="confirm()">Continue as guest</button>
+  </div>
+</nati-ui-modal>

@@ -1,0 +1,85 @@
+<app-guest-notice [visible]="showGuestNotice()" (continue)="onGuestContinue()" />
+<app-confirm-modal />
+
+@if (runner(); as r) {
+  @if (r.current(); as exercise) {
+    <div class="question" [class.correct]="checked() && wasCorrect()" [class.wrong]="checked() && !wasCorrect()">
+      @if (exercise.sentenceType === 'question') {
+        <span class="type-badge">Question</span>
+      }
+
+      <div
+        class="answer-row"
+        cdkDropList
+        [id]="answerListId"
+        cdkDropListOrientation="horizontal"
+        [cdkDropListData]="answer()"
+        [cdkDropListConnectedTo]="[bankListId]"
+        (cdkDropListDropped)="drop($event)"
+      >
+        @for (chunk of answer(); track chunk; let i = $index) {
+          <button
+            type="button"
+            class="chunk placed"
+            cdkDrag
+            [cdkDragDisabled]="checked()"
+            [disabled]="checked()"
+            (click)="removeChunk(i)"
+          >
+            {{ chunk }}
+          </button>
+        }
+        @if (answer().length === 0) {
+          <span class="placeholder">Drag or click words below</span>
+        }
+      </div>
+
+      <div
+        class="bank-row"
+        cdkDropList
+        [id]="bankListId"
+        cdkDropListOrientation="horizontal"
+        [cdkDropListData]="bank()"
+        [cdkDropListConnectedTo]="[answerListId]"
+        (cdkDropListDropped)="drop($event)"
+      >
+        @for (chunk of bank(); track chunk; let i = $index) {
+          <button
+            type="button"
+            class="chunk"
+            cdkDrag
+            [cdkDragDisabled]="checked()"
+            [disabled]="checked()"
+            (click)="pickChunk(i)"
+          >
+            {{ chunk }}
+          </button>
+        }
+      </div>
+
+      @if (checked() && !wasCorrect()) {
+        <div class="solution">{{ exercise.solutionDe }}</div>
+      }
+    </div>
+  } @else {
+    <div class="completion">
+      <h2>🎉 You finished the sentence-building section!</h2>
+      <div class="actions">
+        <button type="button" class="btn btn-primary" (click)="reset()">Practice Again</button>
+        <a class="btn btn-secondary" [routerLink]="['/lektion', lektionId]">Back to Lesson</a>
+      </div>
+    </div>
+  }
+
+  <app-quiz-controls
+    [visible]="!!r.current()"
+    [total]="r.total"
+    [mastered]="r.masteredCount()"
+    [checked]="checked()"
+    [correct]="wasCorrect()"
+    [canCheck]="bank().length === 0"
+    (check)="check()"
+    (continueNext)="continueNext()"
+    (reset)="reset()"
+  />
+}

@@ -1,0 +1,85 @@
+:host {
+  display: contents;
+}
+
+.time-of-day-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  transition: background 0.8s ease;
+
+  &.dawn {
+    background: linear-gradient(160deg, #ffe3d3 0%, #f7c6de 45%, #cdd8f5 100%);
+  }
+
+  &.morning {
+    background: linear-gradient(160deg, #fff6da 0%, #d9ecff 60%, #eef5ff 100%);
+  }
+
+  &.midday {
+    background: linear-gradient(160deg, #eaf6ff 0%, #cfe9ff 55%, #f4faff 100%);
+  }
+
+  &.afternoon {
+    background: linear-gradient(160deg, #ffe9bd 0%, #ffd2a6 45%, #cfe0ff 100%);
+  }
+
+  &.evening {
+    background: linear-gradient(160deg, #ffb17a 0%, #f16f95 45%, #5b53a6 100%);
+  }
+
+  &.night {
+    background: linear-gradient(160deg, #171a35 0%, #232a5c 55%, #0d0f21 100%);
+  }
+}
+
+.sun {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  filter: blur(6px);
+  opacity: 0.6;
+  transition: all 0.8s ease;
+
+  .dawn & {
+    left: 8%;
+    bottom: 5%;
+    background: radial-gradient(circle, rgba(255, 176, 128, 0.9), transparent 70%);
+  }
+
+  .morning & {
+    left: 12%;
+    top: 12%;
+    background: radial-gradient(circle, rgba(255, 224, 130, 0.85), transparent 70%);
+  }
+
+  .midday & {
+    left: 50%;
+    top: 4%;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(255, 250, 220, 0.9), transparent 70%);
+  }
+
+  .afternoon & {
+    right: 10%;
+    top: 14%;
+    background: radial-gradient(circle, rgba(255, 200, 120, 0.85), transparent 70%);
+  }
+
+  .evening & {
+    right: 8%;
+    bottom: 8%;
+    background: radial-gradient(circle, rgba(255, 120, 110, 0.85), transparent 70%);
+  }
+
+  .night & {
+    left: 15%;
+    top: 10%;
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(210, 220, 255, 0.55), transparent 70%);
+  }
+}

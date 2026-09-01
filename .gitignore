@@ -1,0 +1,15 @@
+# Node
+node_modules/
+npm-debug.log
+
+# Build output
+dist/
+.angular/
+
+# Android build artifacts / packaged app
+*.apk
+*.aab
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,65 @@
+<div class="login-page">
+  <app-market-background />
+
+  <form class="login-card" (ngSubmit)="submit()">
+    <img class="logo" [src]="theme.currentTheme() === 'dark' ? 'logo-dark.svg' : 'logo.svg'" alt="German A1" />
+    <h1>{{ isSignup() ? 'Create an account' : 'Welcome back' }}</h1>
+    <p class="subtitle">{{ isSignup() ? 'Sign up to track your progress' : 'Sign in to continue learning' }}</p>
+
+    <label for="username">Username</label>
+    <input
+      id="username"
+      type="text"
+      autocomplete="username"
+      [ngModel]="username()"
+      (ngModelChange)="username.set($event)"
+      name="username"
+    />
+
+    <label for="password">Password</label>
+    <input
+      id="password"
+      type="password"
+      [autocomplete]="isSignup() ? 'new-password' : 'current-password'"
+      [ngModel]="password()"
+      (ngModelChange)="password.set($event)"
+      (blur)="onPasswordBlur()"
+      name="password"
+    />
+    @if (passwordError()) {
+      <div class="field-error">{{ passwordError() }}</div>
+    }
+
+    @if (isSignup()) {
+      <label for="confirmPassword">Confirm password</label>
+      <input
+        id="confirmPassword"
+        type="password"
+        autocomplete="new-password"
+        [ngModel]="confirmPassword()"
+        (ngModelChange)="confirmPassword.set($event)"
+        (blur)="onConfirmPasswordBlur()"
+        name="confirmPassword"
+      />
+      @if (confirmPasswordError()) {
+        <div class="field-error">{{ confirmPasswordError() }}</div>
+      }
+    }
+
+    @if (errorText()) {
+      <div class="error">{{ errorText() }}</div>
+    }
+
+    <button type="submit" class="btn btn-primary" [disabled]="submitting()">
+      {{ isSignup() ? 'Sign up' : 'Log in' }}
+    </button>
+
+    <p class="switch-mode">
+      @if (isSignup()) {
+        Already have an account? <a routerLink="/login">Log in</a>
+      } @else {
+        Don't have an account? <a routerLink="/signup">Sign up</a>
+      }
+    </p>
+  </form>
+</div>

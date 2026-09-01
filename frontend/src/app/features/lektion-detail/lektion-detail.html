@@ -1,0 +1,28 @@
+@if (lektion(); as l) {
+  <div class="section-grid">
+    @for (section of sections(); track section.id) {
+      <div class="section-card" [class.complete]="progressBySectionId().get(section.id)">
+        <h2>{{ section.label }}</h2>
+        <p>{{ descriptions[section.type] }} ({{ section.count }} {{ countNouns[section.type] }})</p>
+
+        @if (progressBySectionId().get(section.id); as progress) {
+          @if (progress.completed) {
+            <div class="status-row">
+              <span class="badge">✓ Completed</span>
+            </div>
+            <button type="button" class="mark-incomplete" (click)="markIncomplete(section.id)">
+              Mark as Incomplete
+            </button>
+          }
+          @if (progress.usedHint) {
+            <p class="hint-note">💡 Used a hint here — redo this section without hints for full mastery.</p>
+          }
+        }
+
+        <a class="btn btn-primary" [routerLink]="sectionRoute(section)">
+          {{ progressBySectionId().get(section.id)?.completed ? 'Practice Again' : 'Start' }}
+        </a>
+      </div>
+    }
+  </div>
+}

@@ -1,0 +1,110 @@
+.login-page {
+  position: relative;
+  // Breaks out of .app-container's centered 960px max-width so the
+  // background spans the full viewport edge-to-edge, starting right below
+  // the fixed header (not behind it) since it stays in normal document flow.
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  // The header spaces itself from page content via its own margin-bottom —
+  // pull that back out here so this page's own background reaches flush
+  // against the header instead of leaving a see-through strip above it.
+  margin-top: -1.25rem;
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // A background always fills its element's full box regardless of padding,
+  // so this padding only spaces the card away from the header/edges — it
+  // doesn't reintroduce the gap that was actually caused by the header
+  // rendering shorter than --header-height (fixed in page-header.scss).
+  padding: 2.5rem 1rem;
+  overflow: hidden;
+}
+
+.login-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 300px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+
+  .logo {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto 0.75rem;
+  }
+
+  h1 {
+    margin: 0 0 0.3rem;
+    font-size: 1.2rem;
+  }
+
+  .subtitle {
+    margin: 0 0 1.15rem;
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+  }
+
+  label {
+    text-align: left;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+
+  input {
+    width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 0.5rem 0.65rem;
+    font-size: 0.92rem;
+    margin-bottom: 0.85rem;
+
+    &:focus {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 1px;
+    }
+  }
+
+  .error {
+    color: var(--color-error);
+    background: var(--color-error-bg);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .field-error {
+    color: var(--color-error);
+    text-align: left;
+    font-size: 0.75rem;
+    margin: -0.55rem 0 0.7rem;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .switch-mode {
+    margin: 1.25rem 0 0;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+
+    a {
+      color: var(--color-primary);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

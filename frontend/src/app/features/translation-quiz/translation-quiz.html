@@ -1,0 +1,62 @@
+<app-guest-notice [visible]="showGuestNotice()" (continue)="onGuestContinue()" />
+<app-confirm-modal />
+
+@if (runner(); as r) {
+  @if (r.current(); as exercise) {
+    <div class="question" [class.correct]="checked() && wasCorrect()" [class.wrong]="checked() && !wasCorrect()">
+      <div class="he">
+        @for (segment of hintSegments(); track $index) {
+          @if (segment.hint) {
+            <nati-ui-tooltip [text]="segment.hint" [delay]="1500" bubbleDir="ltr" (shown)="onHintShown()">{{ segment.text }}</nati-ui-tooltip>
+          } @else {
+            {{ segment.text }}
+          }
+        }
+      </div>
+      <div class="en">{{ exercise.en }}</div>
+      <textarea
+        #answerInput
+        rows="1"
+        lang="de-DE"
+        [readOnly]="checked()"
+        [ngModel]="answer()"
+        (ngModelChange)="updateAnswer($event)"
+        (input)="autoResize(answerInput)"
+        (keydown.enter)="onEnterKey($event)"
+        placeholder="Write your answer here…"
+      ></textarea>
+
+      @if (checked() && capitalizationWarning()) {
+        <div class="warning">⚠ Correct, but check your capitalization: {{ exercise.solutions[0] }}</div>
+      }
+
+      @if (checked() && umlautWarning()) {
+        <div class="warning">⚠ Correct, but note the umlaut: {{ exercise.solutions[0] }}</div>
+      }
+
+      @if (checked() && !wasCorrect()) {
+        <div class="solution">{{ exercise.solutions[0] }}</div>
+      }
+    </div>
+  } @else {
+    <div class="completion">
+      <h2>🎉 You finished the translation section!</h2>
+      <div class="actions">
+        <button type="button" class="btn btn-primary" (click)="reset()">Practice Again</button>
+        <a class="btn btn-secondary" [routerLink]="['/lektion', lektionId]">Back to Lesson</a>
+      </div>
+    </div>
+  }
+
+  <app-quiz-controls
+    [visible]="!!r.current()"
+    [total]="r.total"
+    [mastered]="r.masteredCount()"
+    [checked]="checked()"
+    [correct]="wasCorrect()"
+    [canCheck]="!!answer().trim()"
+    (check)="check()"
+    (continueNext)="continueNext()"
+    (reset)="reset()"
+  />
+}

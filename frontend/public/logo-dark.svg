@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+  <!-- badge -->
+  <rect x="18" y="18" width="164" height="164" rx="30" />
+
+  <!-- umlaut dots, above the "A" -->
+  <line x1="68" y1="66" x2="68" y2="66" stroke-width="11" />
+  <line x1="88" y1="66" x2="88" y2="66" stroke-width="11" />
+
+  <!-- letter A -->
+  <path d="M55,152 L78,88 L101,152" stroke-width="9" />
+  <path d="M64,127 L92,127" stroke-width="9" />
+
+  <!-- numeral 1 -->
+  <path d="M117,102 L130,88 L130,152 M113,152 L147,152" stroke-width="9" />
+</svg>

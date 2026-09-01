@@ -1,0 +1,69 @@
+<header class="page-header">
+  <div class="page-header-inner">
+    <div class="title-row">
+      <a class="logo-link" routerLink="/" aria-label="Go to home">
+        <img class="logo" [src]="theme.currentTheme() === 'dark' ? 'logo-dark.svg' : 'logo.svg'" alt="German A1" />
+      </a>
+      <div class="title-col">
+        @if (info().backLink) {
+          <a class="back-link" [routerLink]="info().backLink!">{{ info().backLabel }}</a>
+        }
+        <h1>
+          {{ info().title }}
+          @if (info().part) {
+            <span class="part">{{ info().part }}</span>
+          }
+        </h1>
+        @if (info().subtitle) {
+          <p class="subtitle">{{ info().subtitle }}</p>
+        }
+      </div>
+    </div>
+
+    @if (!info().hideAccountMenu) {
+      <div class="account">
+        <button
+          type="button"
+          class="account-trigger"
+          (click)="toggleMenu()"
+          [attr.aria-expanded]="menuOpen()"
+          [attr.title]="auth.currentUser()?.username ?? null"
+        >
+          @if (auth.isAuthenticated()) {
+            <svg class="user-icon filled" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="8" r="4" fill="currentColor" />
+              <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8v1H4v-1Z" fill="currentColor" />
+            </svg>
+          } @else {
+            <svg class="user-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.8" />
+              <path
+                d="M4 20c0-4 3.6-7 8-7s8 3 8 7"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+            </svg>
+          }
+        </button>
+
+        @if (menuOpen()) {
+          <div class="account-menu">
+            <button type="button" class="account-menu-item theme-toggle" (click)="toggleTheme()">
+              <span>Dark mode</span>
+              <span class="switch" [class.on]="theme.currentTheme() === 'dark'">
+                <span class="switch-knob"></span>
+              </span>
+            </button>
+            @if (auth.isAuthenticated()) {
+              <button type="button" class="account-menu-item" (click)="logout()">Log out</button>
+            } @else {
+              <a class="account-menu-item" routerLink="/login" (click)="closeMenu()">Log in</a>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+</header>

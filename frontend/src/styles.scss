@@ -1,0 +1,196 @@
+@use 'ui-components/styles';
+
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-border: #e1e5ee;
+  --color-text: #1f2430;
+  --color-text-muted: #6b7280;
+  --color-primary: #3452eb;
+  --color-primary-hover: #2a41c4;
+  --color-success: #1a9c6b;
+  --color-success-bg: #e6f7ef;
+  --color-error: #d64545;
+  --color-error-bg: #fbe9e9;
+  --color-warning: #a06600;
+  --color-warning-bg: #fdf3d8;
+  --radius: 6px;
+  --shadow: 0 1px 3px rgba(20, 24, 40, 0.08), 0 1px 2px rgba(20, 24, 40, 0.04);
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-blur: blur(14px);
+  --header-height: 130px; // fits the tallest variant (pages with a back-link line)
+  --font-he: 'Heebo', system-ui, sans-serif;
+  --font-de: 'Inter', system-ui, sans-serif;
+}
+
+:root[data-theme='dark'] {
+  --color-bg: #12141c;
+  --color-surface: #1b1e29;
+  --color-border: #2e3242;
+  --color-text: #e8eaf0;
+  --color-text-muted: #9aa0b4;
+  --color-primary: #6d87ff;
+  --color-primary-hover: #8298ff;
+  --color-success: #3ecf8e;
+  --color-success-bg: #123626;
+  --color-error: #ff6b6b;
+  --color-error-bg: #3a1d1d;
+  --color-warning: #e0a83e;
+  --color-warning-bg: #3a2f10;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --glass-bg: rgba(18, 20, 28, 0.72);
+
+  // The time-of-day gradient/sun is tied to the hour, not the theme — dim it
+  // so it reads as a faint ambient tint instead of clashing with dark cards.
+  .time-of-day-bg {
+    filter: brightness(0.32) saturate(0.6);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+// Hides the intentional horizontal "overflow" from full-bleed breakout
+// elements (e.g. .login-page's width:100vw trick). This lives on <html>
+// specifically, not <body> — html is already the document's root scrolling
+// element, so giving it (and only it) a non-"visible" overflow value is the
+// standard-behaving choice. Doing the same on body instead would make body
+// its own competing scroll container, which breaks position:sticky (it
+// sticks relative to the nearest scrolling ancestor, not necessarily html).
+html {
+  overflow-x: hidden;
+}
+
+body {
+  position: relative;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-de);
+  direction: ltr;
+}
+
+// Soft blurred color washes behind everything, fixed to the viewport.
+body::before {
+  content: '';
+  position: fixed;
+  inset: -10%;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(52, 82, 235, 0.22), transparent 42%),
+    radial-gradient(circle at 88% 12%, rgba(26, 156, 107, 0.16), transparent 40%),
+    radial-gradient(circle at 50% 92%, rgba(214, 69, 69, 0.12), transparent 45%);
+  filter: blur(70px);
+}
+
+.he {
+  font-family: var(--font-he);
+  direction: rtl;
+  unicode-bidi: isolate;
+}
+
+input,
+textarea,
+select {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.btn {
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.65rem 1.4rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background: var(--color-primary-hover);
+  }
+}
+
+.btn-secondary {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+
+  &:hover:not(:disabled) {
+    background: var(--color-bg);
+  }
+}
+
+.completion {
+  text-align: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-success);
+  border-radius: var(--radius);
+  padding: 2.5rem 1.5rem;
+  box-shadow: var(--shadow);
+
+  h2 {
+    margin: 0 0 0.5rem;
+  }
+
+  p {
+    color: var(--color-text-muted);
+    margin: 0 0 1.5rem;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    text-decoration: none;
+  }
+}
+
+// Angular CDK renders drag previews/placeholders outside the component's own
+// view (often into a body-level overlay), so these can't be component-scoped.
+.cdk-drag-preview {
+  border-radius: 4px;
+  padding: 0.5rem 0.85rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #5470ff 0%, var(--color-primary) 40%, var(--color-primary-hover) 100%);
+  box-shadow: 0 8px 20px rgba(52, 82, 235, 0.35);
+}
+
+// No visible "gap" marker — the reserved slot stays fully invisible; only the
+// surrounding tiles sliding communicates where the drop will land.
+.cdk-drag-placeholder {
+  opacity: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}

@@ -1,0 +1,140 @@
+.question {
+  --card-padding: 1.5rem;
+  --option-radius: 4px;
+
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  // Concentric corners: outer radius = inner (option) radius + the padding gap between them.
+  border-radius: calc(var(--option-radius) + var(--card-padding));
+  padding: var(--card-padding);
+  box-shadow: var(--shadow);
+  margin-bottom: 1.25rem;
+}
+
+.prompt {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 1rem;
+}
+
+.option {
+  position: relative;
+  appearance: none;
+  border: 1px solid transparent;
+  border-radius: var(--option-radius);
+  padding: 1.25rem 1.1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-primary) 10%, var(--color-surface)) 0%,
+    color-mix(in srgb, var(--color-primary) 2%, var(--color-surface)) 100%
+  );
+  box-shadow: 0 1px 3px rgba(20, 24, 40, 0.08);
+  transition: transform 0.12s ease, box-shadow 0.2s ease, opacity 0.15s ease;
+
+  // The colored gradients live on this overlay instead of directly on the
+  // background, since browsers can't smoothly interpolate a solid color into
+  // a multi-stop gradient — fading a layer's opacity in over the base card
+  // is what actually produces a visible color transition.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(20, 24, 40, 0.12);
+  }
+
+  .he,
+  .en {
+    position: relative;
+    transition: color 0.2s ease;
+  }
+
+  .he {
+    color: var(--color-text);
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  .en {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  &.selected {
+    box-shadow: 0 6px 16px rgba(52, 82, 235, 0.35);
+
+    &::before {
+      opacity: 1;
+      background: linear-gradient(135deg, #5470ff 0%, var(--color-primary) 40%, var(--color-primary-hover) 100%);
+    }
+
+    .he {
+      color: #fff;
+    }
+
+    .en {
+      color: rgba(255, 255, 255, 0.85);
+    }
+  }
+
+  &.correct {
+    box-shadow: 0 6px 16px rgba(26, 156, 107, 0.35);
+
+    &::before {
+      opacity: 1;
+      background: linear-gradient(135deg, #34d399 0%, var(--color-success) 40%, #0e7a52 100%);
+    }
+
+    .he {
+      color: #fff;
+    }
+
+    .en {
+      color: rgba(255, 255, 255, 0.85);
+    }
+  }
+
+  &.wrong {
+    box-shadow: 0 6px 16px rgba(214, 69, 69, 0.35);
+
+    &::before {
+      opacity: 1;
+      background: linear-gradient(135deg, #f27d81 0%, var(--color-error) 40%, #a83239 100%);
+    }
+
+    .he {
+      color: #fff;
+    }
+
+    .en {
+      color: rgba(255, 255, 255, 0.85);
+    }
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+
+  &:disabled:not(.correct):not(.wrong) {
+    opacity: 0.45;
+    box-shadow: none;
+  }
+}
+

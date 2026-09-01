@@ -1,0 +1,121 @@
+.question {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 1.25rem;
+
+  &.correct {
+    border-color: var(--color-success);
+  }
+
+  &.wrong {
+    border-color: var(--color-error);
+  }
+}
+
+.type-badge {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface));
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+
+$chunk-row-height: 2.6rem; // measured .chunk height, kept in sync with .chunk's own padding/font-size below
+
+// Wraps instead of scrolling horizontally — on narrow viewports a single
+// scrolling row hid tiles off-screen. Trade-off: CDK's drag-drop position
+// tracking for reordering assumes one geometric axis, so wrapping limits
+// reordering to one-step adjacent swaps instead of jumping straight to the
+// drop position.
+.answer-row {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  // border-box sizing means padding eats into min-height, so this must add the
+  // padding back on top of the chunk's own height, not just repeat it.
+  min-height: calc(#{$chunk-row-height} + 0.5rem * 2);
+  margin-bottom: 0.75rem;
+  background: color-mix(in srgb, var(--color-primary) 5%, var(--color-surface));
+  border: 2px solid color-mix(in srgb, var(--color-primary) 35%, var(--color-surface));
+  border-radius: 4px;
+  direction: ltr;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+
+  &.cdk-drop-list-receiving {
+    background: color-mix(in srgb, var(--color-primary) 10%, var(--color-surface));
+    border-color: var(--color-primary);
+  }
+}
+
+.bank-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  min-height: $chunk-row-height;
+  direction: ltr;
+}
+
+// Positioned out of the flex flow entirely so it's never a sibling CDK has to
+// reconcile against during a drag/drop — that's what caused the drop to render
+// after this text, then jump once Angular removed it a beat later.
+.placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.chunk {
+  flex-shrink: 0;
+  white-space: nowrap;
+  border: none;
+  background: none;
+  border-radius: 4px;
+  padding: 0.5rem 0.6rem;
+  font-size: 1.05rem;
+  color: var(--color-text);
+  cursor: grab;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.15s ease;
+
+  &:hover:not(:disabled) {
+    transform: scale(1.12);
+    color: var(--color-primary);
+  }
+
+  &:active:not(:disabled) {
+    cursor: grabbing;
+  }
+
+  &.placed {
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+}
+
+// Smooth sliding as siblings make room for a dragged tile.
+.cdk-drop-list-dragging .chunk:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.solution {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-success);
+  font-weight: 500;
+}

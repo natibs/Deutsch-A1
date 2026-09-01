@@ -1,0 +1,101 @@
+// The host stays in normal flow to reserve space (so page content doesn't sit
+// underneath), while the bar itself renders fixed to the viewport bottom.
+:host {
+  display: block;
+  height: 108px;
+}
+
+// Full-bleed background, spanning the whole viewport width. Starts translated
+// off-screen; the component's own code animates it in/out via the Web
+// Animations API (see quiz-controls.ts) rather than a CSS transition.
+.result-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-top: 1px solid var(--color-border);
+  transform: translateY(100%);
+}
+
+// ...while the actual controls stay lined up with the rest of the page content.
+.result-bar-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem calc(1rem + env(safe-area-inset-bottom, 0px));
+}
+
+.action-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.75rem;
+
+  .btn-primary {
+    grid-column: 1;
+    justify-self: start;
+  }
+
+  .btn-secondary {
+    grid-column: 3;
+    justify-self: end;
+  }
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+}
+
+.feedback {
+  display: inline-flex;
+  align-items: center;
+  grid-column: 2;
+  justify-self: center;
+  gap: 0.35rem;
+  font-weight: 600;
+  white-space: nowrap;
+
+  &.correct {
+    color: var(--color-success);
+  }
+
+  &.wrong {
+    color: var(--color-error);
+  }
+}
+
+.icon {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.draw {
+  stroke-dasharray: 32;
+  stroke-dashoffset: 32;
+  animation: draw-icon 0.35s ease-out forwards;
+}
+
+.draw-2 {
+  animation-delay: 0.08s;
+}
+
+@keyframes draw-icon {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.progress {
+  margin-inline-start: auto;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  opacity: 0.75;
+}

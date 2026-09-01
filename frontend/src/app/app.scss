@@ -1,0 +1,16 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-container {
+  flex: 1;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  // No top padding — the header now sits in normal flow (position: sticky)
+  // and provides its own spacing via margin-bottom, so nothing needs to be
+  // reserved for it here.
+  padding: 0 1.5rem 3rem;
+}
