@@ -1,3 +1,8 @@
+<a class="practice-banner" routerLink="/practice">
+  <div class="practice-banner-title">🤖 AI Practice</div>
+  <div class="practice-banner-subtitle">Sessions built from what you actually get wrong, grouped by topic</div>
+</a>
+
 <div class="lektion-grid">
   @for (item of lektionenWithProgress(); track item.lektion.id) {
     <a class="lektion-card" [routerLink]="['/lektion', item.lektion.id]">

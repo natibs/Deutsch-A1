@@ -1,0 +1,14 @@
+<div class="category-grid">
+  @for (item of categories(); track item.category) {
+    <a class="category-card" [class.weak]="item.mistakeCount > 0" [routerLink]="['/practice', item.category]">
+      <div class="category-label">{{ item.label }}</div>
+      @if (item.mistakeCount > 0) {
+        <div class="category-count">{{ item.mistakeCount }} tracked mistake{{ item.mistakeCount === 1 ? '' : 's' }}</div>
+      } @else {
+        <div class="category-count muted">No mistakes tracked yet</div>
+      }
+    </a>
+  } @empty {
+    <p class="empty">Loading categories...</p>
+  }
+</div>

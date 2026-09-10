@@ -25,6 +25,12 @@ export abstract class QuizSession<T> implements ConfirmsExit {
   protected readonly wasCorrect = signal(false);
   protected readonly showGuestNotice = signal(false);
 
+  // Whether at least one question has been submitted this attempt (right or
+  // wrong) — distinct from masteredCount, which only counts correct ones.
+  // Stays false while the user is still looking at a pristine first question,
+  // which is when there's genuinely nothing to lose by leaving/restarting.
+  private hasSubmittedAnyQuestion = false;
+
   // The progress-tracking id passed to the backend on completion, e.g.
   // "vocabulary-1", "sentence-1", "translation-1".
   protected abstract readonly sectionId: string;
@@ -37,6 +43,14 @@ export abstract class QuizSession<T> implements ConfirmsExit {
   // Called after `checked`/scroll are already handled by presentCurrent().
   protected abstract onPresentCurrent(current: T | null): void;
 
+  // Whether the CURRENT question already has some input on it (an option
+  // selected, chunks placed, text typed...) — part of what "pristine" means
+  // before the first question has been submitted. Defaults to false; a
+  // subclass overrides this to check its own input signal.
+  protected hasCurrentInput(): boolean {
+    return false;
+  }
+
   protected startOrWarn(): void {
     if (this.auth.isAuthenticated()) this.start();
     else this.showGuestNotice.set(true);
@@ -48,6 +62,7 @@ export abstract class QuizSession<T> implements ConfirmsExit {
   }
 
   protected start(): void {
+    this.hasSubmittedAnyQuestion = false;
     this.runner.set(new QuestionQueue(this.pickExercises()));
     this.presentCurrent();
   }
@@ -62,6 +77,7 @@ export abstract class QuizSession<T> implements ConfirmsExit {
   protected continueNext(): void {
     const runner = this.runner();
     if (!runner) return;
+    this.hasSubmittedAnyQuestion = true;
     runner.submit(this.wasCorrect());
     if (runner.isComplete) {
       this.api.setProgress(this.lektionId, this.sectionId, true).subscribe();
@@ -81,7 +97,8 @@ export abstract class QuizSession<T> implements ConfirmsExit {
 
   private hasUnsavedProgress(): boolean {
     const runner = this.runner();
-    return !!runner && !runner.isComplete;
+    if (!runner || runner.isComplete) return false;
+    return this.hasSubmittedAnyQuestion || this.hasCurrentInput();
   }
 
   private confirmLeave(title: string, confirmLabel: string): Promise<boolean> {

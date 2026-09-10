@@ -24,6 +24,13 @@ export const routes: Routes = [
     path: 'lektion/:id/vocabulary/:sectionIndex',
     loadComponent: () => import('./features/vocabulary-quiz/vocabulary-quiz').then((m) => m.VocabularyQuiz),
     canDeactivate: [confirmQuizExitGuard],
+    data: { reverse: false },
+  },
+  {
+    path: 'lektion/:id/vocabulary-reverse/:sectionIndex',
+    loadComponent: () => import('./features/vocabulary-quiz/vocabulary-quiz').then((m) => m.VocabularyQuiz),
+    canDeactivate: [confirmQuizExitGuard],
+    data: { reverse: true },
   },
   {
     path: 'lektion/:id/sentence',
@@ -33,6 +40,15 @@ export const routes: Routes = [
   {
     path: 'lektion/:id/translation',
     loadComponent: () => import('./features/translation-quiz/translation-quiz').then((m) => m.TranslationQuiz),
+    canDeactivate: [confirmQuizExitGuard],
+  },
+  {
+    path: 'practice',
+    loadComponent: () => import('./features/practice-hub/practice-hub').then((m) => m.PracticeHub),
+  },
+  {
+    path: 'practice/:id',
+    loadComponent: () => import('./features/practice-quiz/practice-quiz').then((m) => m.PracticeQuiz),
     canDeactivate: [confirmQuizExitGuard],
   },
 ];

@@ -1,0 +1,61 @@
+<app-guest-notice [visible]="showGuestNotice()" (continue)="onGuestContinue()" />
+<app-confirm-modal />
+
+@if (runner(); as r) {
+  @if (r.current(); as item) {
+    <div class="question" [class.correct]="checked() && wasCorrect()" [class.wrong]="checked() && !wasCorrect()">
+      @if (item.isCloze) {
+        <div class="prompt cloze">
+          <span>{{ clozeParts()[0] }}</span>
+          <span class="blank" [class.filled]="!!selected()">{{ selected() || '___' }}</span>
+          <span>{{ clozeParts()[1] }}</span>
+        </div>
+      } @else {
+        <div class="prompt">{{ item.prompt }}</div>
+      }
+
+      <div class="options">
+        @for (option of item.options; track option) {
+          <button
+            type="button"
+            class="option"
+            [class.selected]="selected() === option"
+            [class.correct]="checked() && option === item.answer"
+            [class.wrong]="checked() && selected() === option && option !== item.answer"
+            [disabled]="checked()"
+            (click)="select(option)"
+          >
+            {{ option }}
+          </button>
+        }
+      </div>
+
+      @if (checked() && item.he) {
+        <div class="translation">
+          <span class="translation-he">{{ item.he }}</span>
+          <span class="translation-en">{{ item.en }}</span>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="completion">
+      <h2>🎉 Nice work — session complete!</h2>
+      <div class="actions">
+        <button type="button" class="btn btn-primary" (click)="reset()">Practice Again</button>
+        <a class="btn btn-secondary" routerLink="/practice">Back to Categories</a>
+      </div>
+    </div>
+  }
+
+  <app-quiz-controls
+    [visible]="!!r.current()"
+    [total]="r.total"
+    [mastered]="r.masteredCount()"
+    [checked]="checked()"
+    [correct]="wasCorrect()"
+    [canCheck]="!!selected()"
+    (check)="check()"
+    (continueNext)="continueNext()"
+    (reset)="reset()"
+  />
+}

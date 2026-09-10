@@ -104,4 +104,8 @@ export class SentenceBuilder extends QuizSession<SentenceExercise> {
     this.wasCorrect.set(correct);
     this.checked.set(true);
   }
+
+  protected override hasCurrentInput(): boolean {
+    return this.answer().length > 0;
+  }
 }

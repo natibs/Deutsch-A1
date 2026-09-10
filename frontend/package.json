@@ -26,6 +26,7 @@
     "@capacitor/app": "^8.1.1",
     "@capacitor/cli": "^8.5.0",
     "@capacitor/core": "^8.5.0",
+    "core-js": "^3.50.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "ui-components": "file:../../ui-components/dist/ui-components"

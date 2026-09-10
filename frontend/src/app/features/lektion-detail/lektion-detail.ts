@@ -6,12 +6,14 @@ import { PageHeaderService } from '../../core/page-header.service';
 
 const SECTION_DESCRIPTIONS: Record<SectionType, string> = {
   vocabulary: 'Choose the correct translation from 6 options',
+  'vocabulary-reverse': 'Choose the correct German word from 6 options',
   sentence: 'Arrange the scrambled words into a correct sentence',
   translation: 'Translate the Hebrew sentence into German',
 };
 
 const SECTION_COUNT_NOUNS: Record<SectionType, string> = {
   vocabulary: 'words',
+  'vocabulary-reverse': 'words',
   sentence: 'sentences',
   translation: 'sentences',
 };
@@ -62,7 +64,9 @@ export class LektionDetail {
   }
 
   protected sectionRoute(section: SectionDescriptor): string[] {
-    return section.type === 'vocabulary' ? [section.type, String(section.index)] : [section.type];
+    return section.type === 'vocabulary' || section.type === 'vocabulary-reverse'
+      ? [section.type, String(section.index)]
+      : [section.type];
   }
 
   protected markIncomplete(sectionId: string): void {

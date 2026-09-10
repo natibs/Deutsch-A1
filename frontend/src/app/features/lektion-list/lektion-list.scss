@@ -1,3 +1,31 @@
+.practice-banner {
+  display: block;
+  margin-bottom: 1.25rem;
+  padding: 1.25rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
+  box-shadow: var(--shadow);
+  transition: transform 0.12s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(20, 24, 40, 0.15);
+  }
+}
+
+.practice-banner-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.practice-banner-subtitle {
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
 .lektion-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));

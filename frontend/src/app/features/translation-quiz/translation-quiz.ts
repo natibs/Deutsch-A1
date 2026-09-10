@@ -170,4 +170,8 @@ export class TranslationQuiz extends QuizSession<TranslationExercise> {
     this.toastService.dismiss(this.idleToastId);
     this.idleToastId = undefined;
   }
+
+  protected override hasCurrentInput(): boolean {
+    return this.answer().trim().length > 0;
+  }
 }

@@ -1,0 +1,9 @@
+# Widens the JS syntax the build is allowed to emit — the app runs inside
+# Android System WebView, which on an old/never-updated device can lag years
+# behind current Chrome. Android 11 shipped in 2020; this floor keeps the
+# build parseable on WebViews from around that era instead of relying on
+# whatever ships with the newest Chrome.
+Android >= 7
+ChromeAndroid >= 70
+Chrome >= 70
+not dead

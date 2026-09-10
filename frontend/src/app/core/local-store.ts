@@ -19,9 +19,21 @@ export interface StoredProgress {
   updatedAt: string;
 }
 
+// A missed item, grouped by category (dativ, vocabulary, ...) so the AI
+// Practice hub can surface what a user actually struggles with. itemId is a
+// grammar-drill id or a vocabulary entry id, depending on category.
+export interface StoredMistake {
+  userId: string;
+  category: string;
+  itemId: string;
+  count: number;
+  lastMissedAt: string;
+}
+
 const USERS_KEY = 'deutscha1_users';
 const PROGRESS_KEY = 'deutscha1_progress';
 const CURRENT_USER_KEY = 'deutscha1_current_user_id';
+const MISTAKES_KEY = 'deutscha1_mistakes';
 
 // Everything the app needs to run — accounts and progress — lives in
 // localStorage on the device itself. No server involved, so this is the
@@ -68,6 +80,14 @@ export class LocalStore {
   setCurrentUserId(id: string | null): void {
     if (id) localStorage.setItem(CURRENT_USER_KEY, id);
     else localStorage.removeItem(CURRENT_USER_KEY);
+  }
+
+  getMistakes(): StoredMistake[] {
+    return readJson<StoredMistake[]>(MISTAKES_KEY, []);
+  }
+
+  saveMistakes(mistakes: StoredMistake[]): void {
+    localStorage.setItem(MISTAKES_KEY, JSON.stringify(mistakes));
   }
 }
 

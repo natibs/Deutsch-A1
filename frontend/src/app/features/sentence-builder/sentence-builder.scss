@@ -20,12 +20,14 @@
   margin-bottom: 0.75rem;
   font-size: 0.75rem;
   color: var(--color-primary);
+  // Fallback for browsers without color-mix() (Chrome < 111).
+  background: var(--color-surface);
   background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface));
   padding: 0.15rem 0.5rem;
   border-radius: 999px;
 }
 
-$chunk-row-height: 2.6rem; // measured .chunk height, kept in sync with .chunk's own padding/font-size below
+$chunk-row-height: 3.1rem; // measured .chunk height, kept in sync with .chunk's own padding/font-size below
 
 // Wraps instead of scrolling horizontally — on narrow viewports a single
 // scrolling row hid tiles off-screen. Trade-off: CDK's drag-drop position
@@ -36,29 +38,46 @@ $chunk-row-height: 2.6rem; // measured .chunk height, kept in sync with .chunk's
   position: relative;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 0.5rem;
+  align-content: flex-start;
+  gap: 0.65rem;
+  padding: 0.85rem;
   // border-box sizing means padding eats into min-height, so this must add the
   // padding back on top of the chunk's own height, not just repeat it.
-  min-height: calc(#{$chunk-row-height} + 0.5rem * 2);
-  margin-bottom: 0.75rem;
+  min-height: calc(#{$chunk-row-height} + 0.85rem * 2);
+  margin-bottom: 1.5rem;
+  // Fallback for browsers without color-mix() (Chrome < 111).
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
   background: color-mix(in srgb, var(--color-primary) 5%, var(--color-surface));
-  border: 2px solid color-mix(in srgb, var(--color-primary) 35%, var(--color-surface));
-  border-radius: 4px;
+  border: 2px dashed color-mix(in srgb, var(--color-primary) 35%, var(--color-surface));
+  border-radius: 8px;
   direction: ltr;
   transition: border-color 0.15s ease, background-color 0.15s ease;
 
   &.cdk-drop-list-receiving {
+    background: var(--color-surface);
     background: color-mix(in srgb, var(--color-primary) 10%, var(--color-surface));
     border-color: var(--color-primary);
+    border-style: solid;
   }
+}
+
+.bank-label {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
 }
 
 .bank-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  min-height: $chunk-row-height;
+  align-content: flex-start;
+  gap: 0.65rem;
+  padding: 0.85rem;
+  min-height: calc(#{$chunk-row-height} + 0.85rem * 2);
+  background: var(--color-bg);
+  border-radius: 8px;
   direction: ltr;
 }
 
@@ -79,18 +98,24 @@ $chunk-row-height: 2.6rem; // measured .chunk height, kept in sync with .chunk's
 .chunk {
   flex-shrink: 0;
   white-space: nowrap;
-  border: none;
-  background: none;
-  border-radius: 4px;
-  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: 8px;
+  // Generous padding — a real, easy-to-grab touch target on mobile, not
+  // just clickable text.
+  padding: 0.7rem 1.1rem;
   font-size: 1.05rem;
   color: var(--color-text);
   cursor: grab;
-  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.15s ease;
+  box-shadow: 0 1px 2px rgba(20, 24, 40, 0.06);
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.15s ease, box-shadow 0.15s ease,
+    border-color 0.15s ease, background-color 0.15s ease;
 
   &:hover:not(:disabled) {
-    transform: scale(1.12);
+    transform: translateY(-2px) scale(1.05);
     color: var(--color-primary);
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 10px rgba(20, 24, 40, 0.1);
   }
 
   &:active:not(:disabled) {
@@ -99,7 +124,14 @@ $chunk-row-height: 2.6rem; // measured .chunk height, kept in sync with .chunk's
 
   &.placed {
     font-weight: 700;
-    color: var(--color-primary);
+    color: #fff;
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+
+    &:hover:not(:disabled) {
+      color: #fff;
+      background: var(--color-primary-hover);
+    }
   }
 
   &:disabled {
@@ -118,4 +150,19 @@ $chunk-row-height: 2.6rem; // measured .chunk height, kept in sync with .chunk's
   border-top: 1px solid var(--color-border);
   color: var(--color-success);
   font-weight: 500;
+}
+
+.translation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.translation-he {
+  direction: rtl;
 }

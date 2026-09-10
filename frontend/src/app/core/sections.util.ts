@@ -48,6 +48,21 @@ export function buildLektionSections(
     start += count;
   });
 
+  // Same word groupings as the forward sections above (same bucket sizes,
+  // same starts) — just quizzed in the opposite direction.
+  start = 0;
+  vocabSizes.forEach((count, i) => {
+    sections.push({
+      id: `vocabulary-reverse-${i + 1}`,
+      type: 'vocabulary-reverse',
+      index: i + 1,
+      label: vocabSizes.length > 1 ? `Vocabulary ${i + 1} (reverse)` : 'Vocabulary (reverse)',
+      count,
+      start,
+    });
+    start += count;
+  });
+
   if (sentenceCount > 0) {
     sections.push({ id: 'sentence-1', type: 'sentence', index: 1, label: 'Sentence Building', count: sentenceCount });
   }

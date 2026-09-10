@@ -3,6 +3,7 @@ import { Observable, defer } from 'rxjs';
 import { LocalStore, StoredUser } from './local-store';
 import { AuthResponse, Theme, User } from './models';
 import { hashPassword, verifyPassword } from './password-hash';
+import { randomUUID } from './uuid';
 
 const USERNAME_PATTERN = /^[A-Za-z0-9_.-]{3,32}$/;
 // 8+ chars, any characters allowed.
@@ -46,7 +47,7 @@ export class AuthService {
 
     const { hash, salt } = await hashPassword(password);
     const stored: StoredUser = {
-      id: crypto.randomUUID(),
+      id: randomUUID(),
       username,
       passwordHash: hash,
       passwordSalt: salt,

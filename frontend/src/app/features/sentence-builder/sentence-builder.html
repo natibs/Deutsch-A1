@@ -34,6 +34,7 @@
         }
       </div>
 
+      <p class="bank-label">Available words</p>
       <div
         class="bank-row"
         cdkDropList
@@ -57,8 +58,14 @@
         }
       </div>
 
-      @if (checked() && !wasCorrect()) {
-        <div class="solution">{{ exercise.solutionDe }}</div>
+      @if (checked()) {
+        @if (!wasCorrect()) {
+          <div class="solution">{{ exercise.solutionDe }}</div>
+        }
+        <div class="translation">
+          <span class="translation-he">{{ exercise.he }}</span>
+          <span class="translation-en">{{ exercise.en }}</span>
+        </div>
       }
     </div>
   } @else {
